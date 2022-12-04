@@ -1,0 +1,20 @@
+{
+  "name": "backfront",
+  "version": "1.0.0",
+  "description": "full API project",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start":"nodemon index.js"
+  },
+  "keywords": [
+    "api"
+  ],
+  "author": "aline sinclaire",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "helmet": "^6.0.1"
+  }
+}
