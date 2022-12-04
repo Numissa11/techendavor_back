@@ -3,9 +3,9 @@
 const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet')
+const db = require('./dbConfig');
 
 const server = express()
-
 
 // cors and helmet are middelware (stuff that check if everything went ok between 2 process and if yes, goes to the next function)
 // both are something that make secure the sendings of things on the net
@@ -16,6 +16,8 @@ server.use(helmet())
 // then, you have to explicitely say to your server, here, parse this to json
 server.use(express.json())
 
+const testData = require('./testData');
+
 // we put all of this before our endpoint api.get request('/', (req,res) => {....}
 
 // this is called an endpoint:
@@ -23,8 +25,14 @@ server.get('/', (req,res) => {
     res.send('Welcome to this awesome todo server!!!')
 })
 
-server.get('/todos', (res, res) => {
-    // GET all todos
+server.get('/todos', async (req,res) => {
+    // GET todo by id
+    try {
+        const todos = await db('todos');
+        res.json(todos)
+    } catch(err) {
+        console.log(err)
+    }
 })
 
 server.post('/todos', (req, res) => {
