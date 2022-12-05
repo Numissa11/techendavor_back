@@ -46,22 +46,41 @@ server.post('/todos', async (req, res) => {
     try {
         // knex give us the .insert methode, that will insert this into the database for us
         await db('todos').insert({message:message})
-        res.json({message: 'Todo successfully stored'})
-        
+        //res.status tu peux juste le rajouter devant le json pur faire 'fancy' et plus précis
+        res.status(201).json({message: 'Todo successfully stored'})
     } catch (err) {
         console.log('err', err);
     }
 })
 
-server.put('/todos:id', (req, res) => {
-    // PUT a todo is (update)
+server.put('/todos/:id', async (req,res) => {
+    // update a todo is (update)
     // pour update, faut un id pour savoir qui ont update, 
     // et dans ce cas, les :id (:id) ca va représenter une variable, le id
-})
 
-server.delete('/todos:id', (req, res) => {
-    // DELETE a todo (effacer)
-})
+    const { id } = req.params;
+    const { message } = req.body;
+    try {
+         // await db('todos') = get all entries from the todos
+        // ca c'est que des methodes knex
+        const currentTodo = await db('todos').where({ id }).update({ message });
+        res.status(200).json({ message: 'Update successful!' });
+    } catch (err) {
+        console.log(err)
+    }
+});
+
+
+server.delete('/todos/:id', async (req,res) => {
+    // DELETE a todo
+    const { id } = req.params;
+    try {
+        await db('todos').where({ id }).del();
+        res.status(200).json({ message: 'Delete successful!' });
+    } catch (err) {
+        console.log(err)
+    }
+});
 
 // if those .use (cors,helmet,express.json) would be after the endpoint api.get('/'){...} 
 // my endpoint wouldn't have access to them
