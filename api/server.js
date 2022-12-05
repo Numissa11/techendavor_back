@@ -25,11 +25,11 @@ server.get('/', (req,res) => {
     res.send('Welcome to this awesome todo server!!!')
 })
 
-server.get('/todos/:id', async (req,res) => {
+server.get('/todos', async (req,res) => {
     // GET todo by id (on a rajouté le id a la fin et ca nous get le bon id)
     const { id } = req.params;
     try {
-        const currentTodo = await db('todos').where({ id });
+        const currentTodo = await db('todos')
         currentTodo.length === 0 ? res.status(404).json({ message: 'Todo not found'}) : res.status(200).json(currentTodo);
     } catch(err) {
         console.log(err)
