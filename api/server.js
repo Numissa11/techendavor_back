@@ -35,8 +35,17 @@ server.get('/todos', async (req,res) => {
     }
 })
 
-server.post('/todos', (req, res) => {
+server.post('/todos', async (req, res) => {
     // POST a todo (creat a new one)
+    const todo = req.body
+    try {
+        // knex give us the .insert methode, that will insert this into the database for us
+        await db('todos').insert(todo)
+        res.json({message: 'Todo successfully store'})
+        
+    } catch (err) {
+        console.log('err', err);
+    }
 })
 
 server.put('/todos:id', (req, res) => {
