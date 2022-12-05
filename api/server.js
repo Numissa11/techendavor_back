@@ -37,15 +37,15 @@ server.get('/todos', async (req,res) => {
 
 server.post('/todos', async (req, res) => {
     // POST a todo (creat a new one)
-    const todo = req.body
-    if(!todo) {
+    const {message} = req.body
+    if(!message) {
         // if there is no todo, we want to return and send a mesage of what gone wrong
         // if no todo, reponse with status message 400
-        return res.status(400).json({message:'You must include a todo in your request'})
+        return res.status(400).json({message:'You must include a todo message in your request'})
     }
     try {
         // knex give us the .insert methode, that will insert this into the database for us
-        await db('todos').insert(todo)
+        await db('todos').insert({message:message})
         res.json({message: 'Todo successfully stored'})
         
     } catch (err) {
